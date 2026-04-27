@@ -9,12 +9,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/save', (req, res) => {
   const answer = req.body.answer;
-  fs.appendFileSync('answers.txt', answer + '\n');
+  fs.appendFileSync('/bhawya/answers.txt', answer + '\n');
   res.send('ok');
 });
 
 app.get('/answers', (req, res) => {
-  res.sendFile(path.join(__dirname, 'answers.txt'));
+  res.sendFile(path.join(__dirname, '/bhawya/answers.txt'));
 });
 
 app.listen(3000, () => console.log('Server running on port 3000'));
