@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Love Question</title>
+  <title>For Bhawya ❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
   <style>
     body {
@@ -49,12 +49,21 @@
       50% { transform: translateY(-20px); }
     }
 
+    .name-tag {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      opacity: 0.95;
+    }
+
     #question {
       font-family: 'Dancing Script', cursive;
-      font-size: 3em;
+      font-size: 2.8em;
       margin-bottom: 40px;
       text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
       animation: pulse 2s infinite;
+      max-width: 90%;
+      text-align: center;
     }
 
     @keyframes pulse {
@@ -126,23 +135,69 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      margin-top: 30px;
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <div id="question">Do you love me?</div>
+  <div class="name-tag">For Bhawya 💕</div>
+  <div id="question">Will you make me the happiest person and be my forever?</div>
   <button id="yes">Yes</button>
   <button id="no">No</button>
   <div id="response"></div>
+  <a href="answers.html">📖 View Our Story</a>
   <script>
-    let stage = 'love';
+    let stage = 'main';
     const question = document.getElementById('question');
     const yesBtn = document.getElementById('yes');
     const noBtn = document.getElementById('no');
     const response = document.getElementById('response');
 
+    const questions = {
+      main: {
+        text: "Will you make me the happiest person and be my forever?",
+        yes: "💕 Bhawya, do you believe in true love?",
+        no: "😢 Please press yes"
+      },
+      love: {
+        text: "Do you believe love like ours is meant to last?",
+        yes: "💕 Will you let me be by your side through everything?",
+        no: "😢 Please press yes"
+      },
+      beside: {
+        text: "Will you trust me with your heart, Bhawya?",
+        yes: "💕 Can I be the one you run to on both good and bad days?",
+        no: "😢 Please press yes"
+      },
+      trust: {
+        text: "Will you dance with me through life's beautiful journey?",
+        yes: "💕 Do you want to build beautiful memories together?",
+        no: "😢 Please press yes"
+      },
+      dance: {
+        text: "Bhawya, will you be mine, forever and always?",
+        yes: "🎉 You've made me the happiest! I love you! ❤️",
+        no: "😢 Please press yes"
+      }
+    };
+
+    const stageOrder = ['main', 'love', 'beside', 'trust', 'dance'];
+
     function saveAnswer(ans) {
       const answers = JSON.parse(localStorage.getItem('answers') || '[]');
-      answers.push(ans);
+      answers.push({ answer: ans, timestamp: new Date().toLocaleString() });
       localStorage.setItem('answers', JSON.stringify(answers));
     }
 
@@ -154,41 +209,28 @@
     }
 
     yesBtn.addEventListener('click', () => {
-      if (stage === 'love') {
-        saveAnswer('Love: Yes');
-        response.innerHTML = '🎉 Yay! Will you go on a date with me?';
-        question.textContent = '';
-        stage = 'date';
-        shuffleButtons();
-      } else if (stage === 'date') {
-        saveAnswer('Date: Yes');
-        response.innerHTML = '🎉 Wonderful! Will you be my partner?';
-        question.textContent = '';
-        stage = 'partner';
-        shuffleButtons();
-      } else if (stage === 'partner') {
-        saveAnswer('Partner: Yes');
-        response.innerHTML = '🎉 Amazing! Will you be my mommy and wifey?';
-        question.textContent = '';
-        stage = 'mommywifey';
-        shuffleButtons();
-      } else if (stage === 'mommywifey') {
-        saveAnswer('MommyWifey: Yes');
-        response.innerHTML = '🎉 Perfect! Will you marry me?';
-        question.textContent = '';
-        stage = 'marry';
-        shuffleButtons();
-      } else if (stage === 'marry') {
-        saveAnswer('Marry: Yes');
-        response.innerHTML = '🎉 Perfect! I love you forever!';
+      if (stage === 'dance') {
+        saveAnswer({ stage: 'Forever', response: 'YES! 💕' });
+        response.innerHTML = '🎉 Bhawya, you\'ve made me the happiest! I love you so much! ❤️';
         yesBtn.style.display = 'none';
         noBtn.style.display = 'none';
+        question.textContent = '';
+      } else {
+        const currentIndex = stageOrder.indexOf(stage);
+        saveAnswer({ stage: stage, response: 'YES' });
+        response.innerHTML = questions[stage].yes;
+        const nextStage = stageOrder[currentIndex + 1];
+        if (nextStage) {
+          question.textContent = questions[nextStage].text;
+          stage = nextStage;
+          setTimeout(() => shuffleButtons(), 300);
+        }
       }
     });
 
     noBtn.addEventListener('click', () => {
-      saveAnswer(stage.charAt(0).toUpperCase() + stage.slice(1) + ': No');
-      response.innerHTML = '😢 Please press yes';
+      saveAnswer({ stage: stage, response: 'NO' });
+      response.innerHTML = questions[stage].no;
     });
   </script>
 </body>
