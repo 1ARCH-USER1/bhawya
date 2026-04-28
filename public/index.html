@@ -141,11 +141,9 @@
     const response = document.getElementById('response');
 
     function saveAnswer(ans) {
-      fetch('/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answer: ans })
-      });
+      const answers = JSON.parse(localStorage.getItem('answers') || '[]');
+      answers.push(ans);
+      localStorage.setItem('answers', JSON.stringify(answers));
     }
 
     function shuffleButtons() {
