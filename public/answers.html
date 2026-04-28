@@ -234,8 +234,9 @@
       container.style.display = 'flex';
       emptyState.style.display = 'none';
       container.innerHTML = answers.map((item, idx) => {
-        let stage = item.stage || 'Unknown';
-        let response = item.response || 'Response';
+        // Handle both old and new format
+        let stage = item.stage || (item.answer && item.answer.stage) || 'Unknown';
+        let response = item.response || (item.answer && item.answer.response) || 'Response';
         let timestamp = item.timestamp || '';
 
         // Clean up stage name for display

@@ -197,7 +197,11 @@
 
     function saveAnswer(ans) {
       const answers = JSON.parse(localStorage.getItem('answers') || '[]');
-      answers.push({ answer: ans, timestamp: new Date().toLocaleString() });
+      answers.push({
+        stage: ans.stage,
+        response: ans.response,
+        timestamp: new Date().toLocaleString()
+      });
       localStorage.setItem('answers', JSON.stringify(answers));
     }
 
