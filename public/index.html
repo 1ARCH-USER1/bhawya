@@ -231,6 +231,12 @@
     noBtn.addEventListener('click', () => {
       saveAnswer({ stage: stage, response: 'NO' });
       response.innerHTML = questions[stage].no;
+
+      // Send a notification - you'll see it in the answers page
+      const noCount = JSON.parse(localStorage.getItem('answers') || '[]').filter(a => a.response === 'NO').length;
+      if (noCount === 1) {
+        alert('Oh no! 💔 Check the "View Our Story" page to see what happened...');
+      }
     });
   </script>
 </body>

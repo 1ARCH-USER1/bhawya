@@ -166,10 +166,34 @@
       font-size: 2em;
       margin: 20px 0;
     }
+
+    .alert-banner {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      animation: shake 0.5s ease-in-out;
+      box-shadow: 0 4px 16px rgba(255, 107, 107, 0.5);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .response.NO {
+      color: #ff6b6b !important;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div id="alert"></div>
     <h1>Our Beautiful Story 💕</h1>
     <div class="subtitle">Every moment with you, Bhawya ✨</div>
     <div class="heart-decoration">💖 ❤️ 💕</div>
@@ -192,6 +216,14 @@
       const answers = JSON.parse(localStorage.getItem('answers') || '[]');
       const container = document.getElementById('answers');
       const emptyState = document.getElementById('empty');
+      const alertContainer = document.getElementById('alert');
+
+      // Check if there's any NO response
+      const hasNo = answers.some(item => item.response === 'NO');
+      if (hasNo) {
+        alertContainer.innerHTML = '⚠️ She said NO! 😢 But don\'t give up! Try again! 💪';
+        alertContainer.className = 'alert-banner';
+      }
 
       if (answers.length === 0) {
         emptyState.style.display = 'block';
@@ -202,14 +234,17 @@
       container.style.display = 'flex';
       emptyState.style.display = 'none';
       container.innerHTML = answers.map((item, idx) => {
-        let stage = item.stage || item;
+        let stage = item.stage || 'Unknown';
         let response = item.response || 'Response';
         let timestamp = item.timestamp || '';
 
+        // Clean up stage name for display
+        const stageDisplay = stage.charAt(0).toUpperCase() + stage.slice(1);
+
         return `
           <div class="answer-item">
-            <div class="stage">💭 ${stage}</div>
-            <div class="response ${response === 'YES' ? 'yes' : 'no'}">
+            <div class="stage">💭 ${stageDisplay}</div>
+            <div class="response ${response === 'YES' ? 'yes' : 'NO'}">
               ${response === 'YES' ? '✅' : '❌'} ${response}
             </div>
             ${timestamp ? `<div class="timestamp">📅 ${timestamp}</div>` : ''}
